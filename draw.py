@@ -10,48 +10,51 @@ def draw(root, C):
 		else:	
 			child_list = C[root]['child']
 			if C[root]['relation'] == 'nt':
+				l = 0.0
 				for i in range(len( child_list) - 1 ):
+					l += C[child_list[i]]['length']
 					d += elm.ElementDrawing(draw(child_list[i],C))
 					if C[child_list[i]]['relation'] == 'ss' and C[child_list[i + 1]]['relation']  == 'ss':
-						d += elm.Line().length(1)
-					d.save('temp.jpg')
+						d += elm.Line().length(1).at((l,0.0))
+						l += 1
+					# d.save(str(i)+'temp.jpg')
 				d += elm.ElementDrawing(draw(child_list[-1],C))
 			else: 
 				l = C[root]['length']
 				lc, hc = C[child_list[0]]['length'], C[child_list[0]]['height']
 				d.push()
-				print(lc, hc, l)
+				# print(lc, hc, l)
 				if lc < l:
-						# d+= elm.Line().length((l - lc) / 2)
+						d+= elm.Line().length((l - lc) / 2)
 						d += elm.ElementDrawing(draw(child_list[0],C))
-						d+= elm.Line().length((l - lc))
+						d+= elm.Line().length((l - lc) / 2)
 				else:
 					d += elm.ElementDrawing(draw(child_list[0],C))
 
 				
 				for child in child_list[1:]:
-					print(child, hc)
+					# print(child, hc)
 					d.pop()
 					d += elm.Line().length(hc).down()
 					d.push()
 					lc = C[child]['length']
 					temp = draw(child,C)
 					if lc < l:
-						# d += elm.Line().length((l - lc) / 2)
+						d += elm.Line().length((l - lc) / 2).right()
 						d += elm.ElementDrawing(temp).right()
-						d += elm.Line().length((l - lc))
+						d += elm.Line().length((l - lc)/2)
 					else:
 						d += elm.ElementDrawing(temp).right()
 					d += elm.Line().length(hc).up()
 					hc = C[child]['height']
-		d.save('draw.jpg')
+		# d.save(root+'draw.jpg')
 	return d
 def main(root,C):
 	with schemdraw.Drawing(show = False) as d:
 		d += elm.Dot().label('A')
 		d += elm.Line()
 		d += elm.ElementDrawing(draw(root,C))
-		d += elm.Line()
+		d += elm.Line().at((C[root]['length'] + 3,0.0))
 		d += elm.Dot().label('B')
 		d.save('main.jpg')
 
