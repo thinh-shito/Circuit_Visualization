@@ -13,6 +13,7 @@ def draw(root, C):
 				l = 0.0
 				for i in range(len( child_list) - 1 ):
 					l += C[child_list[i]]['length']
+					h = C[child_list[i]]['height']
 					d += elm.ElementDrawing(draw(child_list[i],C))
 					if C[child_list[i]]['relation'] == 'ss' and C[child_list[i + 1]]['relation']  == 'ss':
 						d += elm.Line().length(1).at((l,0.0))
@@ -31,9 +32,10 @@ def draw(root, C):
 				else:
 					d += elm.ElementDrawing(draw(child_list[0],C))
 
-				
+					
 				for child in child_list[1:]:
 					# print(child, hc)
+					pr = d.here
 					d.pop()
 					d += elm.Line().length(hc).down()
 					d.push()
@@ -45,7 +47,7 @@ def draw(root, C):
 						d += elm.Line().length((l - lc)/2)
 					else:
 						d += elm.ElementDrawing(temp).right()
-					d += elm.Line().length(hc).up()
+					d += elm.Line().toy(pr)
 					hc = C[child]['height']
 		# d.save(root+'draw.jpg')
 	return d
