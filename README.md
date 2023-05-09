@@ -25,7 +25,10 @@ The project is built to draw electrical circuits through a specified syntax that
   - Value for each resistor.
   
   Example: R1=10.4,R2=20.1,R3=50,R4=13.9,R5=60,R6=5,R7=80
- - Finally result
+  
+- Click 'Biểu diễn'
+
+- Finally result
  
  ![](./demo.png)  
 
